@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+  font-family: "Gill Sans", sans-serif;
+}
+body{
+  padding-bottom: 100px;
+}
+
+input[type=number] {
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #070C6B;
+  border-radius: 20px;
+  resize: vertical;
+}
+input[type=number]:focus {
+    background-color: #fff;
+    outline: none;
+}
+
+.container {
+  border-radius: 5px;
+  padding: 20px;
+  padding-top: 0;
+}
+
+.col-100 {
+  float: left;
+  width: 100%;
+  margin-top: 6px;
+}
+.col-50{
+  float: left;
+  width:50%;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.range-slider {
+  width: 100%;
+  float: right;
+  margin: 0 auto;
+  position: relative;
+}
+
+#range, #range2 {
+  -webkit-appearance: none;
+  width: 100%;
+}
+#range:focus, #range2:focus {
+  outline: none;
+}
+
+
+
+#range::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+  background: linear-gradient(
+    90deg,
+    #070C6B var(--range-progress),
+    #dee4ec var(--range-progress)
+  );
+  border-radius: 1rem;
+}
+
+#range2::-webkit-slider-runnable-track{
+    width: 100%;
+    height: 10px;
+    cursor: pointer;
+    background: linear-gradient(
+        90deg,
+        #070C6B var(--range2-progress),
+        #dee4ec var(--range2-progress)
+    );
+    border-radius: 1rem;
+}
+
+#range::-webkit-slider-thumb, #range2::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: 3px solid #070C6B;
+  box-shadow: 0 1px 3px rgba(0, 0, 255, 0.3);
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  transform: translateY(calc(-50% + 5px));
+}
+
+#tooltip, #tooltip2 {
+  position: absolute;
+  top: -2.25rem;
+}
+#tooltip span, #tooltip2 span {
+  position: absolute;
+  text-align: center;
+  display: block;
+  line-height: 1;
+  padding: 0.125rem 0.25rem;
+  color: #fff;
+  border-radius: 0.125rem;
+  background: #070C6B;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+#tooltip span:before, #tooltip2 span:before {
+  position: absolute;
+  content: "";
+  left: 50%;
+  bottom: -8px;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border: 4px solid transparent;
+  border-top-color: #070C6B;
+}
+.col-75 {
+  float: left;
+  width: 85%;
+  margin-top: 6px;
+}
+.col-25 {
+  float: left;
+  width: 15%;
+  margin-top: 6px;
+}
+
+.col-30{
+  float: left;
+  width: 30%;
+}
+.col-70{
+  float: left;
+  width: 70%;
+}
+.custom-label{
+  margin-top: 10px;
+}
+.margin-left-20{
+  margin: 0 0 10px 20px;
+
+}
+@media screen and (max-width: 600px) {
+  .col-25, .col-75, .col-30, .col-70, .col-50 {
+    width: 100%;
+    margin-top: 0;
+    padding: 0 !important;
+  }
+  .custom-margin{
+    margin: 10px 0 !important;
+  }
+  .custom-margin2{
+    margin: 0 !important;
+  }
+  .label, .custom-label{
+        margin-bottom: 10px !important;
+        margin-top: 4px !important;
+  }
+  .margin-left-20, .content-table{
+    margin-left: 0 !important;
+    margin-top:10px;
+  }
+}
+.custom-margin{
+    margin: 20px 0 5px 0;
+}
+.custom-margin2{
+    margin: 25px 0 10px 0;
+}
+
+table, th, td {
+  border: 1px solid #070C6B;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 5px;
+  text-align: left;
+}
+
+.content-table {
+  border-collapse: collapse;
+  width:95%;
+  margin: 10px 0 0 20px;
+  font-size: 0.9em;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-table thead tr th {
+  background-color: #030537 !important;
+  color: #ffffff;
+  text-align: center;
+  font-weight: bold;
+}
+.content-table td{
+    text-align: right;
+    width: 20%;
+}
+
+.content-table th {
+  padding: 12px 15px;
+}
+
+.content-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.content-table tbody tr:last-of-type {
+  border-bottom: 2px solid #030537;
+}
+
+.content-table tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
+}
+.init-table{
+    width:100%;
+}
+.init-table td {
+    text-align:right;
+    width:5%;
+    
+}
+.hide{
+    display: none;
+}
+#submit{
+    padding: 10px 20px;
+    cursor: pointer;
+    background: #070C6B;
+    color: #dddddd;
+    border: none;
+    border-radius: 20px;
+}
+.green{
+  color:green !important;
+}
+.red{
+  color:red !important;
+}
+.center-td{
+  text-align: center !important;
+}
+    
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+      <div class="col-50">
+        <div class="row" style="margin-bottom: 10px;">
+          <div class="col-30 custom-label">
+            <label for="startamount">Starting Amount:</label>
+          </div>
+          <div class="col-70">
+            <input type="number" min="1" value="500" id="startamount" name="startamount" placeholder="Starting Amount $$">
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-30 custom-label">
+              <label for="desiredmonthlyincome">Desired Monthly Income:</label>
+            </div>
+            <div class="col-70">
+              <input type="number" min="1" value="250" id="desiredmonthlyincome" name="desiredmonthlyincome" placeholder="Desired Monthly Income $$">
+            </div>
+        </div>
+        <div class="row custom-margin">
+          <div class="col-30 label">
+            <label for="range">First withdrawal month:</label>
+          </div>
+          <div class="col-70">
+            <div class="range-slider">
+                <div id="tooltip"></div>
+                <input id="range" type="range" step="1" value="10" min="1" max="12">
+            </div>
+          </div>
+        </div>
+        <div class="row custom-margin2">
+          <div class="col-30 label">
+            <label for="range2">Net Weekly growth rate:</label>
+        </div>
+          <div class="col-70">
+            <div class="range-slider">
+                <div id="tooltip2"></div>
+                <input id="range2" type="range" step="1" value="10" min="0" max="10">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <select name="month" id="monthname">
+          </select>
+        </div>
+        <div class="row">
+          <div class="col-100" style="text-align: center;">
+            <button id="submit">Calculate</button>
+        </div>
+        <div class="col-100" style="text-align: center;">
+            <span id="feasible" class="green">Proposed growth & withdrawal plan is feasible</span>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-70">
+            <p><b>12 Month Summary:</b></p> 
+             <table class="init-table">
+                 
+                 <tr>
+                   <th>Starting amount</th>
+                   <td id="stamount">$500</td>
+                 </tr>
+                 <tr>
+                   <th>Monthly withdrawals</th>
+                   <td id="mwd">$750</td>
+                 </tr>
+                 <tr>
+                   <th>12 month Closing Balance</th>
+                   <td id="12cb">$69781</td>
+                 </tr>
+                 <tr>
+                   <th style="font-weight: 900;">Total</th>
+                   <td id="totalb" style="font-weight: 900;">$71031</td>
+                 </tr>
+               </table>
+           </div>
+        </div>
+      </div>
+
+      <div class="col-50">
+        <div style="overflow-x: auto;">
+          <p class="margin-left-20"><b>12 month projection:</b></p> 
+          <table class="content-table">
+              <thead>
+                <tr>
+                  <th>Period</th>
+                  <th class="hide">weeks</th>
+                  <th class="hide">period</th>
+                  <th>Starting Amount</th>
+                  <th>Profits</th>
+                  <th class="hide">Sub Total</th>
+                  <th>Withdrawals</th>
+                  <th>Closing Balance</th>
+                </tr>
+               </thead>
+               <tbody>
+                 <tr>
+                   <td class="center-td" id="month1">Month 1</td>
+                   <td id="wim1" class="hide">4</td>
+                   <td id="period1" class="hide">1</td>
+                   <td id="sa1">$500</td>
+                   <td id="pf1">$232</td>
+                   <td id="st1" class="hide">$732</td>
+                   <td id="wd1">$0</td>
+                   <td id="cb1">$732</td>
+                 </tr>
+                 <tr>
+                   <td class="center-td" id="month2">Month 2</td>
+                   <td id="wim2" class="hide">4</td>
+                   <td id="period2" class="hide">2</td>
+                   <td id="sa2">$732</td>
+                   <td id="pf2">$340</td>
+                   <td id="st2" class="hide">$1072</td>
+                   <td id="wd2">$0</td>
+                   <td id="cb2">$1072</td>
+                 </tr>
+                 <tr>
+                   <td class="center-td" id="month3">Month 3</td>
+                   <td id="wim3" class="hide">5</td>
+                   <td id="period3" class="hide">3</td>
+                   <td id="sa3">$1072</td>
+                   <td id="pf3">$654</td>
+                   <td id="st3" class="hide">$1726</td>
+                   <td id="wd3">$0</td>
+                   <td id="cb3">$1726</td>
+                 </tr>
+                 <tr>
+                  <td class="center-td" id="month4">Month 4</td>
+                  <td id="wim4" class="hide">4</td>
+                  <td id="period4" class="hide">4</td>
+                  <td id="sa4">$1726</td>
+                  <td id="pf4">$801</td>
+                  <td id="st4" class="hide">$2527</td>
+                  <td id="wd4">$0</td>
+                  <td id="cb4">$2527</td>
+                </tr>
+                <tr>
+                  <td class="center-td" id="month5">Month 5</td>
+                  <td id="wim5" class="hide">4</td>
+                  <td id="period5" class="hide">5</td>
+                  <td id="sa5">$2527</td>
+                  <td id="pf5">$1173</td>
+                  <td id="st5" class="hide">$3700</td>
+                  <td id="wd5">$0</td>
+                  <td id="cb5">$3700</td>
+                </tr>
+                <tr>
+                  <td class="center-td" id="month6">Month 6</td>
+                  <td id="wim6" class="hide">5</td>
+                  <td id="period6" class="hide">6</td>
+                  <td id="sa6">$3700</td>
+                  <td id="pf6">$2259</td>
+                  <td id="st6" class="hide">$5959</td>
+                  <td id="wd6">$0</td>
+                  <td id="cb6">$5959</td>
+                </tr>
+                <tr>
+                  <td class="center-td" id="month7">Month 7</td>
+                  <td id="wim7" class="hide">4</td>
+                  <td id="period7" class="hide">7</td>
+                  <td id="sa7">$5959</td>
+                  <td id="pf7">$2766</td>
+                  <td id="st7" class="hide">$8725</td>
+                  <td id="wd7">$0</td>
+                  <td id="cb7">$8725</td>
+                </tr>
+                <tr>
+                  <td class="center-td" id="month8">Month 8</td>
+                  <td id="wim8" class="hide">4</td>
+                  <td id="period8" class="hide">8</td>
+                  <td id="sa8">$8725</td>
+                  <td id="pf8">$4049</td>
+                  <td id="st8" class="hide">$12774</td>
+                  <td id="wd8">$0</td>
+                  <td id="cb8">$12774</td>
+                </tr>
+                <tr>
+                  <td class="center-td" id="month9">Month 9</td>
+                  <td id="wim9" class="hide">5</td>
+                  <td id="period9" class="hide">9</td>
+                  <td id="sa9">$12774</td>
+                  <td id="pf9">$7799</td>
+                  <td id="st9" class="hide">$20573</td>
+                  <td id="wd9">$0</td>
+                  <td id="cb9">$20573</td>
+                </tr>
+                <tr>
+                  <td class="center-td" id="month10">Month 10</td>
+                  <td id="wim10" class="hide">4</td>
+                  <td id="period10" class="hide">10</td>
+                  <td id="sa10">$20573</td>
+                  <td id="pf10">$9548</td>
+                  <td id="st10" class="hide">$30120</td>
+                  <td id="wd10">$250</td>
+                  <td id="cb10">$29871</td>
+                </tr>
+                <tr>
+                  <td class="center-td" id="month11">Month 11</td>
+                  <td id="wim11" class="hide">4</td>
+                  <td id="period11" class="hide">11</td>
+                  <td id="sa11">$29871</td>
+                  <td id="pf11">$13863</td>
+                  <td id="st11" class="hide">$43733</td>
+                  <td id="wd11">$250</td>
+                  <td id="cb11">$43484</td>
+                </tr>
+                <tr>
+                  <td class="center-td" id="month12">Month 12</td>
+                  <td id="wim12" class="hide">5</td>
+                  <td id="period12" class="hide">12</td>
+                  <td id="sa12">$43484</td>
+                  <td id="pf12">$26547</td>
+                  <td id="st12" class="hide">$70029</td>
+                  <td id="wd12">$250</td>
+                  <td id="cb12">$69781</td>
+                </tr>
+                 
+              </tbody>
+            </table>
+        </div>
+      </div>
+      
+    </div>
+  
+</div>
+
+<script>
+     const range = document.getElementById('range'),
+        tooltip = document.getElementById('tooltip'),
+        setValue = ()=>{
+            const newValue = Number( (range.value - range.min) * 100 / (range.max - range.min) ),
+            newPosition = 16 - (newValue * 0.32);
+            tooltip.innerHTML = `<span>${range.value}</span>`;
+            tooltip.style.left = `calc(${newValue}% + (${newPosition}px))`;
+            document.documentElement.style.setProperty("--range-progress", `calc(${newValue}% + (${newPosition}px))`);
+        };
+    document.addEventListener("DOMContentLoaded", setValue);
+    range.addEventListener('input', setValue);
+</script>
+
+<script>
+    const range2 = document.getElementById('range2'),
+       tooltip2 = document.getElementById('tooltip2'),
+       setValue2 = ()=>{
+        const newValue2 = Number( (range2.value - range2.min) * 100 / (range2.max - range2.min) ),
+        newPosition2 = 16 - (newValue2 * 0.32);
+        tooltip2.innerHTML = `<span>${range2.value}%</span>`;
+        tooltip2.style.left = `calc(${newValue2}% + (${newPosition2}px))`;
+        document.documentElement.style.setProperty("--range2-progress", `calc(${newValue2}% + (${newPosition2}px))`);
+       };
+   document.addEventListener("DOMContentLoaded", setValue2);
+   range2.addEventListener('input', setValue2);
+
+  
+</script>
+<script>
+    document.getElementById("submit").addEventListener("click", function(event){
+        event.preventDefault();
+
+        var startamount = replace_integer(document.getElementById("startamount").value);
+        var dmincome = replace_integer(document.getElementById("desiredmonthlyincome").value);
+        var fwmonth = replace_integer(document.getElementById("range").value);
+        var nwgr = replace_integer(document.getElementById("range2").value);
+
+        var mwd = 0;
+
+        for (let i = 1; i < 13; i++) {
+
+          document.getElementById(`sa${i}`).innerHTML = i > 1 ? document.getElementById(`cb${i-1}`).innerHTML : "$" + startamount ;
+
+          document.getElementById(`pf${i}`).innerHTML = "$" + get_profit(replace_integer(document.getElementById(`sa${i}`).innerHTML), nwgr, replace_integer(document.getElementById(`wim${i}`).innerHTML));
+
+          document.getElementById(`st${i}`).innerHTML = "$" + (parseInt(replace_integer(document.getElementById(`sa${i}`).innerHTML)) + parseInt(replace_integer(document.getElementById(`pf${i}`).innerHTML)));
+
+          document.getElementById(`wd${i}`).innerHTML = parseInt(replace_integer(document.getElementById(`period${i}`).innerHTML)) < parseInt(fwmonth) ? "$0" : "$"+ dmincome ;
+
+          document.getElementById(`cb${i}`).innerHTML = "$" + (parseInt(replace_integer(document.getElementById(`st${i}`).innerHTML)) - parseInt(replace_integer(document.getElementById(`wd${i}`).innerHTML)));
+
+          mwd += parseInt(replace_integer(document.getElementById(`wd${i}`).innerHTML));
+        }
+
+        document.getElementById("stamount").innerHTML = "$" + startamount;
+        document.getElementById("mwd").innerHTML = "$" + mwd;
+        document.getElementById("12cb").innerHTML = document.getElementById("cb12").innerHTML;
+
+        document.getElementById("totalb").innerHTML = "$" + (parseInt(replace_integer(document.getElementById("stamount").innerHTML)) + parseInt(replace_integer(document.getElementById("mwd").innerHTML)) + parseInt(replace_integer(document.getElementById("12cb").innerHTML)));
+
+        var mathmin = Math.min(parseInt(replace_integer(document.getElementById("cb1").innerHTML)), parseInt(replace_integer(document.getElementById("cb2").innerHTML)), parseInt(replace_integer(document.getElementById("cb3").innerHTML)), parseInt(replace_integer(document.getElementById("cb4").innerHTML)), parseInt(replace_integer(document.getElementById("cb5").innerHTML)), parseInt(replace_integer(document.getElementById("cb6").innerHTML)), parseInt(replace_integer(document.getElementById("cb7").innerHTML)), parseInt(replace_integer(document.getElementById("cb8").innerHTML)), parseInt(replace_integer(document.getElementById("cb9").innerHTML)), parseInt(replace_integer(document.getElementById("cb10").innerHTML)), parseInt(replace_integer(document.getElementById("cb11").innerHTML)), parseInt(replace_integer(document.getElementById("cb12").innerHTML)))
+        
+        if(mathmin < 0){
+          document.getElementById("feasible").classList.remove("green");
+          document.getElementById("feasible").classList.add("red");
+          document.getElementById("feasible").innerHTML = "Proposed growth & withdrawal plan is not feasible";
+          
+        }
+        else{
+          document.getElementById("feasible").classList.remove("red");
+          document.getElementById("feasible").classList.add("green");
+          document.getElementById("feasible").innerHTML = "Proposed growth & withdrawal plan is feasible";
+        }
+
+        var tds = document.getElementsByTagName("td");
+
+        for(let i=0; i < tds.length; i++){
+          if(parseInt(replace_integer(tds[i].innerHTML)) < 0){
+            tds[i].classList.add("red");
+          }
+          else{
+            tds[i].classList.remove("red");
+          }
+        }
+
+
+    });
+</script>
+
+<script>
+
+function get_profit(starting_amount, growth_rate, weeks_in_month){
+
+  var startingamount = parseFloat(starting_amount);
+
+  var growthrate = (parseFloat(growth_rate) / 100) + 1;
+
+  var weeksinmonth = parseFloat(weeks_in_month);
+
+  var power = Math.pow(growthrate, weeksinmonth);
+
+  var round = (Math.round((startingamount * power) - startingamount) * 100)
+
+  return round / 100;
+
+}
+
+function replace_integer(number){
+  var toRemove = "$";
+  number = number.replace(toRemove,'');
+  return number;
+}
+
+
+</script>
+
+<script>
+  window.onload = function() {
+  writeMonthOptions(); 
+  };
+
+  var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  function writeMonthOptions() {
+     var myselect = document.getElementById("monthname"), year = new Date().getFullYear();
+     var today = new Date();
+     var optionValues;
+ 
+     var gen = function (max) {
+         var curMonth = today.getMonth();
+         var curYear = year;  // presevere outer year value if you hava other use
+         do {
+             optionValues = months[curMonth] + ' ' + curYear;
+             myselect.add(new Option(optionValues, optionValues), null);
+ 
+             ++curMonth;
+ 
+             // When months reach the 13th ele of months, advance to next year.
+             if (curMonth === months.length) {
+                 ++curYear;
+                 curMonth = 0;
+             }
+ 
+             max++;
+         } while (max < 12);
+     }(0);
+ }
+</script>
+
+</body>
+</html>
