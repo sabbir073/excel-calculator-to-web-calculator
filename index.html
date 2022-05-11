@@ -207,11 +207,11 @@ th, td {
 }
 .content-table td{
     text-align: right;
-    width: 20%;
+    width: 16%;
 }
 
 .content-table th {
-  padding: 12px 15px;
+  padding: 10px 0;
 }
 
 .content-table tbody tr {
@@ -237,6 +237,9 @@ th, td {
     text-align:right;
     width:5%;
     
+}
+.hide{
+  display:none;
 }
 
 #submit{
@@ -363,6 +366,7 @@ select#monthname {
                   <th class="hide">period</th>
                   <th>Starting Amount</th>
                   <th>Profits</th>
+                  <th>Performance Fee</th>
                   <th class="hide">Sub Total</th>
                   <th>Withdrawals</th>
                   <th>Closing Balance</th>
@@ -375,6 +379,7 @@ select#monthname {
                    <td id="period0" class="hide">1</td>
                    <td id="sa0"></td>
                    <td id="pf0"></td>
+                   <td id="perf0"></td>
                    <td id="st0" class="hide"></td>
                    <td id="wd0"></td>
                    <td id="cb0"></td>
@@ -385,6 +390,7 @@ select#monthname {
                    <td id="period1" class="hide">2</td>
                    <td id="sa1"></td>
                    <td id="pf1"></td>
+                   <td id="perf1"></td>
                    <td id="st1" class="hide"></td>
                    <td id="wd1"></td>
                    <td id="cb1"></td>
@@ -395,6 +401,7 @@ select#monthname {
                    <td id="period2" class="hide">3</td>
                    <td id="sa2"></td>
                    <td id="pf2"></td>
+                   <td id="perf2"></td>
                    <td id="st2" class="hide"></td>
                    <td id="wd2"></td>
                    <td id="cb2"></td>
@@ -405,6 +412,7 @@ select#monthname {
                   <td id="period3" class="hide">4</td>
                   <td id="sa3"></td>
                   <td id="pf3"></td>
+                  <td id="perf3"></td>
                   <td id="st3" class="hide"></td>
                   <td id="wd3"></td>
                   <td id="cb3"></td>
@@ -415,6 +423,7 @@ select#monthname {
                   <td id="period4" class="hide">5</td>
                   <td id="sa4"></td>
                   <td id="pf4"></td>
+                  <td id="perf4"></td>
                   <td id="st4" class="hide"></td>
                   <td id="wd4"></td>
                   <td id="cb4"></td>
@@ -425,6 +434,7 @@ select#monthname {
                   <td id="period5" class="hide">6</td>
                   <td id="sa5"></td>
                   <td id="pf5"></td>
+                  <td id="perf5"></td>
                   <td id="st5" class="hide"></td>
                   <td id="wd5"></td>
                   <td id="cb5"></td>
@@ -435,6 +445,7 @@ select#monthname {
                   <td id="period6" class="hide">7</td>
                   <td id="sa6"></td>
                   <td id="pf6"></td>
+                  <td id="perf6"></td>
                   <td id="st6" class="hide"></td>
                   <td id="wd6"></td>
                   <td id="cb6"></td>
@@ -445,6 +456,7 @@ select#monthname {
                   <td id="period7" class="hide">8</td>
                   <td id="sa7"></td>
                   <td id="pf7"></td>
+                  <td id="perf7"></td>
                   <td id="st7" class="hide"></td>
                   <td id="wd7"></td>
                   <td id="cb7"></td>
@@ -455,6 +467,7 @@ select#monthname {
                   <td id="period8" class="hide">9</td>
                   <td id="sa8"></td>
                   <td id="pf8"></td>
+                  <td id="perf8"></td>
                   <td id="st8" class="hide"></td>
                   <td id="wd8"></td>
                   <td id="cb8"></td>
@@ -465,6 +478,7 @@ select#monthname {
                   <td id="period9" class="hide">10</td>
                   <td id="sa9"></td>
                   <td id="pf9"></td>
+                  <td id="perf9"></td>
                   <td id="st9" class="hide"></td>
                   <td id="wd9"></td>
                   <td id="cb9"></td>
@@ -475,6 +489,7 @@ select#monthname {
                   <td id="period10" class="hide">11</td>
                   <td id="sa10"></td>
                   <td id="pf10"></td>
+                  <td id="perf10"></td>
                   <td id="st10" class="hide"></td>
                   <td id="wd10"></td>
                   <td id="cb10"></td>
@@ -485,6 +500,7 @@ select#monthname {
                   <td id="period11" class="hide">12</td>
                   <td id="sa11"></td>
                   <td id="pf11"></td>
+                  <td id="perf11"></td>
                   <td id="st11" class="hide"></td>
                   <td id="wd11"></td>
                   <td id="cb11"></td>
@@ -550,7 +566,7 @@ function get_profit(starting_amount, growth_rate, weeks_in_month){
 
   var power = Math.pow(growthrate, weeksinmonth);
 
-  var round = (Math.round((startingamount * power) - startingamount) * 100)
+  var round = (Math.round((startingamount * power) - startingamount) * 100);
 
   return round / 100;
 
@@ -559,6 +575,7 @@ function get_profit(starting_amount, growth_rate, weeks_in_month){
 function replace_integer(number){
   var toRemove = "$";
   number = number.replace(toRemove,'');
+  number = number.replace(/,/g, '');
   return number;
 }
 
@@ -672,24 +689,26 @@ function startingpoint(){
 
         for (let i = 0; i < 12; i++) {
 
-          document.getElementById(`sa${i}`).innerHTML = i > 0 ? document.getElementById(`cb${i-1}`).innerHTML : "$" + startamount ;
+          document.getElementById(`sa${i}`).innerHTML = i > 0 ? numberWithCommas(document.getElementById(`cb${i-1}`).innerHTML) : "$" + numberWithCommas(startamount) ;
 
-          document.getElementById(`pf${i}`).innerHTML = "$" + get_profit(replace_integer(document.getElementById(`sa${i}`).innerHTML), nwgr, replace_integer(document.getElementById(`wim${i}`).innerHTML));
+          document.getElementById(`pf${i}`).innerHTML = "$" + numberWithCommas(get_profit(replace_integer(document.getElementById(`sa${i}`).innerHTML), nwgr, replace_integer(document.getElementById(`wim${i}`).innerHTML)));
 
-          document.getElementById(`st${i}`).innerHTML = "$" + (parseInt(replace_integer(document.getElementById(`sa${i}`).innerHTML)) + parseInt(replace_integer(document.getElementById(`pf${i}`).innerHTML)));
+          document.getElementById(`perf${i}`).innerHTML = "$" + numberWithCommas(Math.round(((20/100) * parseInt(replace_integer(document.getElementById(`pf${i}`).innerHTML)))));
 
-          document.getElementById(`wd${i}`).innerHTML = parseInt(replace_integer(document.getElementById(`period${i}`).innerHTML)) < parseInt(fwmonth) ? "$0" : "$"+ dmincome ;
+          document.getElementById(`st${i}`).innerHTML = "$" + numberWithCommas(parseInt(replace_integer(document.getElementById(`sa${i}`).innerHTML)) + parseInt(replace_integer(document.getElementById(`pf${i}`).innerHTML)));
 
-          document.getElementById(`cb${i}`).innerHTML = "$" + (parseInt(replace_integer(document.getElementById(`st${i}`).innerHTML)) - parseInt(replace_integer(document.getElementById(`wd${i}`).innerHTML)));
+          document.getElementById(`wd${i}`).innerHTML = parseInt(replace_integer(document.getElementById(`period${i}`).innerHTML)) < parseInt(fwmonth) ? "$0" : "$"+ numberWithCommas(dmincome) ;
+
+          document.getElementById(`cb${i}`).innerHTML = "$" + numberWithCommas(parseInt(replace_integer(document.getElementById(`st${i}`).innerHTML)) - (parseInt(replace_integer(document.getElementById(`wd${i}`).innerHTML)) + parseInt(replace_integer(document.getElementById(`perf${i}`).innerHTML))) );
 
           mwd += parseInt(replace_integer(document.getElementById(`wd${i}`).innerHTML));
         }
 
-        document.getElementById("stamount").innerHTML = "$" + startamount;
-        document.getElementById("mwd").innerHTML = "$" + mwd;
-        document.getElementById("12cb").innerHTML = document.getElementById("cb11").innerHTML;
+        document.getElementById("stamount").innerHTML = "$" + numberWithCommas(startamount);
+        document.getElementById("mwd").innerHTML = "$" + numberWithCommas(mwd);
+        document.getElementById("12cb").innerHTML = numberWithCommas(document.getElementById("cb11").innerHTML);
 
-        document.getElementById("totalb").innerHTML = "$" + (parseInt(replace_integer(document.getElementById("stamount").innerHTML)) + parseInt(replace_integer(document.getElementById("mwd").innerHTML)) + parseInt(replace_integer(document.getElementById("12cb").innerHTML)));
+        document.getElementById("totalb").innerHTML = "$" + numberWithCommas(parseInt(replace_integer(document.getElementById("stamount").innerHTML)) + parseInt(replace_integer(document.getElementById("mwd").innerHTML)) + parseInt(replace_integer(document.getElementById("12cb").innerHTML)));
 
         var mathmin = Math.min(parseInt(replace_integer(document.getElementById("cb0").innerHTML)), parseInt(replace_integer(document.getElementById("cb1").innerHTML)), parseInt(replace_integer(document.getElementById("cb2").innerHTML)), parseInt(replace_integer(document.getElementById("cb3").innerHTML)), parseInt(replace_integer(document.getElementById("cb4").innerHTML)), parseInt(replace_integer(document.getElementById("cb5").innerHTML)), parseInt(replace_integer(document.getElementById("cb6").innerHTML)), parseInt(replace_integer(document.getElementById("cb7").innerHTML)), parseInt(replace_integer(document.getElementById("cb8").innerHTML)), parseInt(replace_integer(document.getElementById("cb9").innerHTML)), parseInt(replace_integer(document.getElementById("cb10").innerHTML)), parseInt(replace_integer(document.getElementById("cb11").innerHTML)))
         
@@ -715,6 +734,10 @@ function startingpoint(){
             tds[i].classList.remove("red");
           }
         }
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
 
 </script>
