@@ -11,7 +11,7 @@ body{
   padding-bottom: 100px;
 }
 
-input[type=number] {
+input[type=text] {
   width: 100%;
   padding: 9px;
   border: 1px solid #070C6B;
@@ -19,7 +19,7 @@ input[type=number] {
   resize: vertical;
 }
 
-input[type=number]:focus {
+input[type=text]:focus {
     background-color: #fff;
     outline: none;
 }
@@ -47,86 +47,7 @@ input[type=number]:focus {
   display: table;
   clear: both;
 }
-.range-slider {
-  width: 100%;
-  float: right;
-  margin: 0 auto;
-  position: relative;
-}
 
-#range, #range2 {
-  -webkit-appearance: none;
-  width: 100%;
-}
-#range:focus, #range2:focus {
-  outline: none;
-}
-
-
-
-#range::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 10px;
-  cursor: pointer;
-  background: linear-gradient(
-    90deg,
-    #070C6B var(--range-progress),
-    #dee4ec var(--range-progress)
-  );
-  border-radius: 1rem;
-}
-
-#range2::-webkit-slider-runnable-track{
-    width: 100%;
-    height: 10px;
-    cursor: pointer;
-    background: linear-gradient(
-        90deg,
-        #070C6B var(--range2-progress),
-        #dee4ec var(--range2-progress)
-    );
-    border-radius: 1rem;
-}
-
-#range::-webkit-slider-thumb, #range2::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  border: 3px solid #070C6B;
-  box-shadow: 0 1px 3px rgba(0, 0, 255, 0.3);
-  border-radius: 50%;
-  background: #fff;
-  cursor: pointer;
-  height: 20px;
-  width: 20px;
-  transform: translateY(calc(-50% + 5px));
-}
-
-#tooltip, #tooltip2 {
-  position: absolute;
-  top: -2.25rem;
-}
-#tooltip span, #tooltip2 span {
-  position: absolute;
-  text-align: center;
-  display: block;
-  line-height: 1;
-  padding: 0.125rem 0.25rem;
-  color: #fff;
-  border-radius: 0.125rem;
-  background: #070C6B;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
-#tooltip span:before, #tooltip2 span:before {
-  position: absolute;
-  content: "";
-  left: 50%;
-  bottom: -8px;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border: 4px solid transparent;
-  border-top-color: #070C6B;
-}
 .col-75 {
   float: left;
   width: 85%;
@@ -175,7 +96,7 @@ input[type=number]:focus {
   }
 }
 .custom-margin{
-    margin: 20px 0 5px 0;
+    margin: 10px 0 5px 0;
 }
 .custom-margin2{
     margin: 25px 0 10px 0;
@@ -260,17 +181,67 @@ th, td {
   text-align: center !important;
 }
 
-select#monthname {
+select#monthname, select#range {
     border: 1px solid #030537;
     border-radius: 50px;
     height: 35px;
     width: 100%;
     padding: 0px 12px;
 }
+
+/**spinner**/
+
+.noscroll {
+    position: fixed;
+    overflow: hidden;
+}
+
+#overlay {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(18, 15, 15, 0.845);
+}
+
+#spinner {
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   width:45px;
+   height:45px;
+   display:none;
+   z-index: 101;
+   padding:0px;
+   margin-top: -20px;
+   margin-left: -20px;
+   border-radius:100%;
+   border:5px solid;
+   border-top-color:#070C6B;
+   border-bottom-color:rgb(255, 255, 255);
+   border-left-color:#070C6B;
+   border-right-color:rgb(255, 255, 255);
+   -webkit-animation: spinner 1s ease-in-out infinite;
+   animation: spinner 1s ease-in-out infinite;
+}
+@keyframes spinner {
+   from {transform: rotate(0deg);}
+   to {transform: rotate(360deg);}
+}
+@-webkit-keyframes spinner {
+   from {-webkit-transform: rotate(0deg);}
+   to {-webkit-transform: rotate(360deg);}
+}
     
 </style>
 </head>
 <body>
+  <div id="overlay"></div>
+<div id="spinner"></div>
 <div class="container">
     <div class="row">
       <div class="col-50">
@@ -279,7 +250,7 @@ select#monthname {
             <label for="startamount">Starting Amount:</label>
           </div>
           <div class="col-70">
-            <input type="number" min="1" value="500" id="startamount" name="startamount" placeholder="Starting Amount $$">
+            <input type="text" min="1" value="500" id="startamount" name="startamount" placeholder="Starting Amount $$">
           </div>
         </div>
         <div class="row">
@@ -287,31 +258,10 @@ select#monthname {
               <label for="desiredmonthlyincome">Desired Monthly Income:</label>
             </div>
             <div class="col-70">
-              <input type="number" min="1" value="250" id="desiredmonthlyincome" name="desiredmonthlyincome" placeholder="Desired Monthly Income $$">
+              <input type="text" min="1" value="250" id="desiredmonthlyincome" name="desiredmonthlyincome" placeholder="Desired Monthly Income $$">
             </div>
         </div>
-        <div class="row custom-margin">
-          <div class="col-30 label">
-            <label for="range">First withdrawal month:</label>
-          </div>
-          <div class="col-70">
-            <div class="range-slider">
-                <div id="tooltip"></div>
-                <input id="range" type="range" step="1" value="10" min="1" max="12">
-            </div>
-          </div>
-        </div>
-        <div class="row custom-margin2">
-          <div class="col-30 label">
-            <label for="range2">Net Weekly growth rate:</label>
-        </div>
-          <div class="col-70">
-            <div class="range-slider">
-                <div id="tooltip2"></div>
-                <input id="range2" type="range" step="1" value="10" min="0" max="10">
-            </div>
-          </div>
-        </div>
+
         <div class="row custom-margin">
           <div class="col-30 custom-label">
             <label for="monthname">Select Starting Month:</label>
@@ -321,6 +271,40 @@ select#monthname {
             </select>
           </div>
         </div>
+        <div class="row custom-margin">
+          <div class="col-30 custom-label">
+            <label for="range">First withdrawal month:</label>
+          </div>
+          <div class="col-70">
+            <select name="month" id="range">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10" selected>10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+            </select>
+            
+               
+            
+          </div>
+        </div>
+        <div class="row custom-margin">
+          <div class="col-30 custom-label">
+            <label for="range2">Net Weekly growth rate:</label>
+        </div>
+          <div class="col-70">
+                <input id="range2" type="text" value="10%" disabled>
+            
+          </div>
+        </div>
+        
         <div class="row">
           <div class="col-100" style="text-align: center;">
             <button id="submit">Calculate</button>
@@ -516,40 +500,13 @@ select#monthname {
 </div>
 
 <script>
-     const range = document.getElementById('range'),
-        tooltip = document.getElementById('tooltip'),
-        setValue = ()=>{
-            const newValue = Number( (range.value - range.min) * 100 / (range.max - range.min) ),
-            newPosition = 16 - (newValue * 0.32);
-            tooltip.innerHTML = `<span>${range.value}</span>`;
-            tooltip.style.left = `calc(${newValue}% + (${newPosition}px))`;
-            document.documentElement.style.setProperty("--range-progress", `calc(${newValue}% + (${newPosition}px))`);
-        };
-    document.addEventListener("DOMContentLoaded", setValue);
-    range.addEventListener('input', setValue);
-</script>
-
-<script>
-    const range2 = document.getElementById('range2'),
-       tooltip2 = document.getElementById('tooltip2'),
-       setValue2 = ()=>{
-        const newValue2 = Number( (range2.value - range2.min) * 100 / (range2.max - range2.min) ),
-        newPosition2 = 16 - (newValue2 * 0.32);
-        tooltip2.innerHTML = `<span>${range2.value}%</span>`;
-        tooltip2.style.left = `calc(${newValue2}% + (${newPosition2}px))`;
-        document.documentElement.style.setProperty("--range2-progress", `calc(${newValue2}% + (${newPosition2}px))`);
-       };
-   document.addEventListener("DOMContentLoaded", setValue2);
-   range2.addEventListener('input', setValue2);
-
-  
-</script>
-<script>
     document.getElementById("submit").addEventListener("click", function(event){
         event.preventDefault();
-
-        gettdmonth();
-        startingpoint();
+        spinner();
+        setTimeout(function(){
+          gettdmonth();
+          startingpoint(); 
+        }, 1000);
 
     });
 </script>
@@ -570,6 +527,12 @@ function get_profit(starting_amount, growth_rate, weeks_in_month){
 
   return round / 100;
 
+}
+
+function replace_parcent(x){
+  var toRemove = "%";
+  x = x.replace(toRemove,'');
+  return x;
 }
 
 function replace_integer(number){
@@ -683,7 +646,7 @@ function startingpoint(){
   var startamount = replace_integer(document.getElementById("startamount").value);
         var dmincome = replace_integer(document.getElementById("desiredmonthlyincome").value);
         var fwmonth = replace_integer(document.getElementById("range").value);
-        var nwgr = replace_integer(document.getElementById("range2").value);
+        var nwgr = replace_parcent(replace_integer(document.getElementById("range2").value));
 
         var mwd = 0;
 
@@ -715,7 +678,7 @@ function startingpoint(){
         if(mathmin < 0){
           document.getElementById("feasible").classList.remove("green");
           document.getElementById("feasible").classList.add("red");
-          document.getElementById("feasible").innerHTML = "Proposed growth & withdrawal plan is not feasible";
+          document.getElementById("feasible").innerHTML = "Not feasible - reduce withdrawal amount or shift first withdrawal month forward";
           
         }
         else{
@@ -738,6 +701,21 @@ function startingpoint(){
 
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function spinner(){
+
+  document.body.setAttribute("class", "noscroll");
+
+  document.getElementById("overlay").style.display = "block";
+  document.getElementById("spinner").style.display = "block";
+
+  setTimeout(function(){
+    document.getElementById("spinner").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+    document.body.className = document.body.className.replace(/\bnoscroll\b/,''); 
+  }, 1000);
+
 }
 
 </script>
