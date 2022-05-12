@@ -277,18 +277,7 @@ select#monthname, select#range {
           </div>
           <div class="col-70">
             <select name="month" id="range">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10" selected>10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
+              
             </select>
             
                
@@ -548,6 +537,7 @@ function replace_integer(number){
 <script>
   window.onload = function() {
   writeMonthOptions();
+  document.getElementById("range").value = "10";
   startingpoint();
   };
 
@@ -555,19 +545,22 @@ function replace_integer(number){
 
   function writeMonthOptions() {
      var myselect = document.getElementById("monthname"), year = new Date().getFullYear();
+     var firstwdmonth = document.getElementById("range");
      var today = new Date();
      var optionValues;
  
      var gen = function (max) {
          var curMonth = today.getMonth();
          var curYear = year;  // presevere outer year value if you hava other use
+         rangevalues = 1;
 
          do {
              optionValues = months[curMonth] + ' ' + curYear;
              var newopt = new Option(optionValues, optionValues);
+             var rangeopt = new Option(optionValues, rangevalues);
              newopt.setAttribute("ID",curMonth);
              myselect.add(newopt, null);
-
+             firstwdmonth.add(rangeopt, null);
              document.getElementById(`month${max}`).innerHTML = optionValues;
 
              var weekinmonths = sundays(curYear, curMonth);
@@ -575,6 +568,7 @@ function replace_integer(number){
              document.getElementById(`wim${max}`).innerHTML = weekinmonths;
  
              ++curMonth;
+             ++rangevalues;
  
              // When months reach the 13th ele of months, advance to next year.
              if (curMonth === months.length) {
